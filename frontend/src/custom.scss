@@ -1,0 +1,8 @@
+// Override Bootstrap Variables
+$primary: #8458B3; // Replace with your desired primary color (e.g., Tomato)
+$secondary: #D0BDF4; // Replace with your desired secondary color
+$success: #28a745; // Optional: Override success color
+$danger: #dc3545; // Optional: Override danger color
+
+// Import Bootstrap
+@import "~bootstrap/scss/bootstrap";
