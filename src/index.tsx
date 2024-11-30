@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
-import Router from './components/Router';
+import Router from './Components/Router';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './custom.scss';
 import './main.css';

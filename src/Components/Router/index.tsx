@@ -1,10 +1,10 @@
 import React from "react";
 import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
-import ClientePage from "../../pages/Cliente";
+import ClientePage from "../../Pages/Cliente";
 import LocalNav from "../Navbar";
-import ProdutoPage from "../../pages/Produto";
-import ServicoPage from "../../pages/Serviço";
-import RelatoriosPage from "../../pages/Relatorios";
+import ProdutoPage from "../../Pages/Produto";
+import ServicoPage from "../../Pages/Serviço";
+import RelatoriosPage from "../../Pages/Relatorios";
 
 function LocalNavWrapper() {
   const navigate = useNavigate();

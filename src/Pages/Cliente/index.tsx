@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import { Button, Container, Table } from "react-bootstrap";
 import { FaEdit, FaEye } from "react-icons/fa";
 import { FaRegTrashCan } from "react-icons/fa6";
-import LocalModal from "../../components/Modal";
-import LocalClienteCadastroForm from "../../components/Form/Cliente/CadastroForm";
-import LocalClienteExcluirForm from "../../components/Form/Cliente/ExcluirForm";
-import LocalClienteEditarForm from "../../components/Form/Cliente/EditarForm";
-import LocalDetalhesClienteForm from "../../components/Form/Cliente/Detalhes";
+import LocalModal from "../../Components/Modal";
+import LocalClienteCadastroForm from "../../Components/Form/Cliente/CadastroForm";
+import LocalClienteExcluirForm from "../../Components/Form/Cliente/ExcluirForm";
+import LocalClienteEditarForm from "../../Components/Form/Cliente/EditarForm";
+import LocalDetalhesClienteForm from "../../Components/Form/Cliente/Detalhes";
 
 type Props = {
   objects: any;

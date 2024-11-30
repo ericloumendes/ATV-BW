@@ -2,10 +2,10 @@ import React, { FC, useState } from "react";
 import { Button, Container, Table } from "react-bootstrap";
 import { FaEdit } from "react-icons/fa";
 import { FaRegTrashCan } from "react-icons/fa6";
-import LocalModal from "../../components/Modal";
-import LocalServicoCadastroForm from "../../components/Form/Serviço/CadastroForm";
-import LocalServicoExcluirForm from "../../components/Form/Serviço/ExcluirForm";
-import LocalServicoEditarForm from "../../components/Form/Serviço/EditarForm";
+import LocalModal from "../../Components/Modal";
+import LocalServicoCadastroForm from "../../Components/Form/Serviço/CadastroForm";
+import LocalServicoExcluirForm from "../../Components/Form/Serviço/ExcluirForm";
+import LocalServicoEditarForm from "../../Components/Form/Serviço/EditarForm";
 
 type Props = {
   objects: any;

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "react-bootstrap";
-import LocalModal from "../../components/Modal";
+import LocalModal from "../../Components/Modal";
 
 type ClientesObj = {
   id: number;
