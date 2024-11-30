@@ -1,51 +1,38 @@
-import React, { useState } from "react";
+import React, { FC, useState, useEffect } from "react";
 import { Button, Container, Table } from "react-bootstrap";
-import { FaEdit, FaEye } from "react-icons/fa";
+import { FaEdit } from "react-icons/fa";
 import { FaRegTrashCan } from "react-icons/fa6";
 import LocalModal from "../../components/Modal";
-import LocalClienteCadastroForm from "../../components/Form/Cliente/CadastroForm";
-import LocalClienteExcluirForm from "../../components/Form/Cliente/ExcluirForm";
-import LocalClienteEditarForm from "../../components/Form/Cliente/EditarForm";
-import LocalDetalhesClienteForm from "../../components/Form/Cliente/Detalhes";
+import LocalServicoCadastroForm from "../../components/Form/Serviço/CadastroForm";
+import LocalServicoExcluirForm from "../../components/Form/Serviço/ExcluirForm";
+import LocalServicoEditarForm from "../../components/Form/Serviço/EditarForm";
+
+type ServicoDataType = {
+  serv_cod: number,
+  serv_nome: string,
+  serv_valor: number,
+  serv_genero: string,
+  serv_dataCriacao: Date
+}
 
 type Props = {
   objects: any;
   types: string[];
+  clientes: any;
 };
 
-type ClientDataType = {
-  cli_cod: number,
-  cli_nome: string,
-  cli_nomeSocial: string
-  cli_sexo: string,
-  cli_cpf: string,
-  cli_cpfEmissao: Date
-  telefones: [{
-    tel_cod: number,
-    tel_numero: string,
-    tel_ddd: string,
-    cli_cod: number
-  }],
-  rgs: [{
-    rg_cod: number,
-    rg_valor: string,
-    rg_dataEmissao: string,
-    cli_cod: number
-  }]
-}
-
-const ClientePage: React.FC<Props> = ({ objects, types }) => {
+const ServicoPage: FC<Props> = ({ objects, types, clientes }) => {
   const [showModalEdicao, setShowModalEdicao] = useState(false);
   const [showModalExcluir, setShowModalExcluir] = useState(false);
   const [showModalCadastro, setShowModalCadastro] = useState(false);
-  const [showModalDetalhes, setShowModalDetalhes] = useState(false);
+  const [consumoData, setConsumoData] = useState<{ [key: number]: number }>({});
   const [selectedClient, setSelectedClient] = useState(0);
-  const [object, setObject] = useState<ClientDataType | undefined>();
+  const [object, setObject] = useState<ServicoDataType | undefined>();
 
   const handleShowEdicao = (clientId: number) => {
     let obj
-    objects.map((e: { cli_cod: number; }) => {
-      if (e.cli_cod == clientId){
+    objects.map((e: { serv_cod: number; }) => {
+      if (e.serv_cod == clientId){
         obj = e;
       }
     })
@@ -65,24 +52,40 @@ const ClientePage: React.FC<Props> = ({ objects, types }) => {
   const handleShowCadastro = () => setShowModalCadastro(true);
   const handleCloseCadastro = () => setShowModalCadastro(false);
 
-  const handleShowDetalhes = (ClientId: number) => {
-    let obj
-    objects.map((e: { cli_cod: number; }) => {
-      if (e.cli_cod == ClientId){
-        obj = e;
-      }
-    })
-
-    setObject(obj)
-    setSelectedClient(ClientId);
-    setShowModalDetalhes(true);
+  const formatCurrency = (value: number): string => {
+    return new Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    }).format(value);
   };
-  const handleCloseDetalhes = () => setShowModalDetalhes(false);
+
+  // Fetch consumption data for a given service ID
+  const fetchConsumo = async (id: number): Promise<number> => {
+    const response = await fetch(`http://localhost:5000/servico/consumo/${id}`);
+    const jsonData = await response.json();
+    return jsonData;
+  };
+
+  // Update consumo data when the component mounts or objects change
+  useEffect(() => {
+    const fetchAllConsumos = async () => {
+      const consumoPromises = objects.map(async (row: any) => {
+        const consumo = await fetchConsumo(row.serv_cod);
+        setConsumoData((prev) => ({
+          ...prev,
+          [row.serv_cod]: consumo,
+        }));
+      });
+      await Promise.all(consumoPromises);
+    };
+
+    fetchAllConsumos();
+  }, [objects]); // Run this effect when objects change
 
   return (
     <>
       <div className="TitleText">
-        <h1>Clientes</h1>
+        <h1>Serviços</h1>
       </div>
 
       <br />
@@ -94,7 +97,7 @@ const ClientePage: React.FC<Props> = ({ objects, types }) => {
               {types.map((value, index) => (
                 <th key={index}>{value}</th>
               ))}
-              <th>Detalhes</th>
+              <th>Consumo</th>
               <th>Editar</th>
               <th>Excluir</th>
             </tr>
@@ -103,22 +106,19 @@ const ClientePage: React.FC<Props> = ({ objects, types }) => {
             {objects.map((Row: any, index: any) => (
               <tr key={index}>
                 {types.map((key, colIndex) => (
-                  <td key={colIndex}>{Row[key]?.toString()}</td>
+                  <td key={colIndex}>
+                    {key === "serv_valor" ? formatCurrency(Row[key]) : Row[key]?.toString()}
+                  </td>
                 ))}
                 <td>
-                  <button
-                    onClick={() => handleShowDetalhes(Row.cli_cod)}
-                    style={{
-                      backgroundColor: "rgba(255,255,255,0)",
-                      borderColor: "rgba(0,0,0,0)",
-                    }}
-                  >
-                    <FaEye style={{ color: "white" }} />
-                  </button>
+                  {/* Display the consumption data for this row */}
+                  {consumoData[Row.serv_cod] !== undefined
+                    ? consumoData[Row.serv_cod]
+                    : "Carregando..."}
                 </td>
                 <td>
                   <button
-                    onClick={() => handleShowEdicao(Row.cli_cod)}
+                    onClick={() => handleShowEdicao(Row.serv_cod)}
                     style={{
                       backgroundColor: "rgba(255,255,255,0)",
                       borderColor: "rgba(0,0,0,0)",
@@ -129,7 +129,7 @@ const ClientePage: React.FC<Props> = ({ objects, types }) => {
                 </td>
                 <td>
                   <button
-                    onClick={() => handleShowExcluir(Row.cli_cod)}
+                    onClick={() => handleShowExcluir(Row.serv_cod)}
                     style={{
                       backgroundColor: "rgba(0,0,0,0)",
                       borderColor: "rgba(0,0,0,0)",
@@ -147,7 +147,7 @@ const ClientePage: React.FC<Props> = ({ objects, types }) => {
 
         <div className="TitleText">
           <Button variant="primary" onClick={handleShowCadastro}>
-            Cadastrar cliente
+            Cadastrar serviço
           </Button>
         </div>
 
@@ -155,11 +155,12 @@ const ClientePage: React.FC<Props> = ({ objects, types }) => {
         <LocalModal
           show={showModalEdicao}
           onHide={handleCloseEdicao}
-          title="Editar Cliente"
+          title="Editar Serviço"
           bodyText="Aqui vão os formulários de edição"
           bodyForm={
-            <LocalClienteEditarForm
-              Object={object}
+            <LocalServicoEditarForm
+              object={object}
+              cliente={clientes}
               quitButtonText="Sair"
               subimitButtonText="Enviar"
               onHide={handleCloseEdicao}
@@ -171,11 +172,11 @@ const ClientePage: React.FC<Props> = ({ objects, types }) => {
         <LocalModal
           show={showModalExcluir}
           onHide={handleCloseExcluir}
-          title="Excluir Cliente"
-          bodyText="Você tem certeza que deseja excluir este cliente?"
+          title="Excluir Serviço"
+          bodyText="Você tem certeza que deseja exluir este serviço?"
           bodyForm={
-            <LocalClienteExcluirForm
-              clienteId={selectedClient}
+            <LocalServicoExcluirForm
+              servicoId={selectedClient}
               quitButtonText="Não"
               subimitButtonText="Sim"
               onHide={handleCloseExcluir}
@@ -187,28 +188,13 @@ const ClientePage: React.FC<Props> = ({ objects, types }) => {
         <LocalModal
           show={showModalCadastro}
           onHide={handleCloseCadastro}
-          title="Cadastrar Cliente"
+          title="Cadastrar Serviço"
           bodyText="Preencha os campos abaixo:"
           bodyForm={
-            <LocalClienteCadastroForm
+            <LocalServicoCadastroForm
               quitButtonText="Sair"
               subimitButtonText="Cadastrar"
               onHide={handleCloseCadastro}
-            />
-          }
-        />
-
-        {/* Modal de detalhes */}
-        <LocalModal
-          show={showModalDetalhes}
-          onHide={handleCloseDetalhes}
-          title="Detalhes:"
-          bodyText=""
-          bodyForm={
-            <LocalDetalhesClienteForm
-              quitButtonText="Sair"
-              onHide={handleCloseDetalhes}
-              object={object}
             />
           }
         />
@@ -217,4 +203,4 @@ const ClientePage: React.FC<Props> = ({ objects, types }) => {
   );
 };
 
-export default ClientePage;
+export default ServicoPage;

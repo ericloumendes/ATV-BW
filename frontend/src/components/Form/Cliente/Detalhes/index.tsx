@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Button, Modal, Form } from "react-bootstrap";
+import { FaRegTrashCan } from "react-icons/fa6";
 
 type Props = {
   object: any
@@ -9,60 +10,33 @@ type Props = {
 
 const LocalDetalhesClienteForm: React.FC<Props> = ({ object, quitButtonText, onHide }) => {
   const [showPhoneForm, setShowPhoneForm] = useState(false);
-  const [newTelddd, setNewTelddd] = useState("");
-  const [newTelNumero, setNewTelNumero] = useState("");
+  const [newPhone, setNewPhone] = useState("");
+  const [newDdd, setNewDdd] = useState("");
   const [showRgForm, setShowRgForm] = useState(false);
-  const [newEstado, setNewEstado] = useState("");
-  const [newCidade, setNewCidade] = useState("");
-  const [newBairro, setNewBairro] = useState("");
-  const [newRua, setNewRua] = useState("");
-  const [newNumero, setNewNumero] = useState("");
-  const [newCodigoPostal, setNewCodigoPostal] = useState("");
-  const [newInformacoesAdicionais, setNewInformacoesAdicionais] = useState("");
+  const [newRg, setNewRg] = useState("");
+  const [newRgEmissao, setNewRgEmissao] = useState("");
 
   const handleAddPhoneClick = () => setShowPhoneForm(true);
 
-  const handlePhoneInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {setNewTelNumero(e.target.value);}
-  const handleDddInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {setNewTelddd(e.target.value);}
+  const handlePhoneInputChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setNewPhone(e.target.value);
+
+  const handlePhoneDddInputChange = (e: React.ChangeEvent<HTMLInputElement>) => setNewDdd(e.target.value);
 
   const handlePhoneSubmit = async () => {
-
-    if (newTelNumero == '' || newTelddd == ''){
+    if (newPhone == '' || newDdd == ''){
       alert('Por favor, preencha todos os campos!')
     }
 
     else{
-
+    
     try{
-
-      let formdata = []
-
-      console.log(object.telefones)
-
-      object.telefones.map((tel: { numero: any; ddd: any; }) => {
-          let data = {
-            numero: tel.numero,
-            ddd: tel.ddd
-          }
-
-          formdata.push(data)
-      })
-
-      let data = {
-        numero: newTelNumero,
-        ddd: newTelddd
-      }
-
-      formdata.push(data)
-
-      console.log(formdata)
-
-      const response = await fetch(`http://localhost:32832/cliente/atualizar`, {
-        method: 'PUT',
+      const response = await fetch(`http://localhost:5000/telefones/`, {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ id: object.id, nome: object.nome, sobreNome: object.nomeSobrenome, email: object.email, endereco: object.endereco, telefones: formdata }), 
+        body: JSON.stringify({ tel_numero: newPhone, tel_ddd: newDdd, cli_cod: object.cli_cod}), 
       });
       // Check for a successful response
       if (response.ok) {
@@ -71,78 +45,108 @@ const LocalDetalhesClienteForm: React.FC<Props> = ({ object, quitButtonText, onH
         window.location.reload();
       } else {
         const errorText = await response.text(); // Get the error message from the server
-        alert(`Erro ao editar telefone: ${errorText}`);
+        alert(`Erro ao cadastrar o telefone: ${errorText}`);
       }
     } catch (error) {
       console.error('Erro na requisição:', error);
-      alert('Erro ao cadastrar telefone');
+      alert('Erro ao cadastrar o telefone');
     }
 
 
     setShowPhoneForm(false);
-    setNewTelNumero("");
-    setNewTelddd("");
+    setNewPhone("");
+    setNewDdd("");
   }
   };
 
-  const handleAddRgClick = () => setShowRgForm(true);
-
-  const handleEstadoInputChange = (e: React.ChangeEvent<HTMLInputElement>) => { setNewEstado(e.target.value); }
-  const handleCidadeInputChange = (e: React.ChangeEvent<HTMLInputElement>) => { setNewCidade(e.target.value); }
-  const handleBairroInputChange = (e: React.ChangeEvent<HTMLInputElement>) => { setNewBairro(e.target.value); }
-  const handleRuaInputChange = (e: React.ChangeEvent<HTMLInputElement>) => { setNewRua(e.target.value); }
-  const handleNumeroInputChange = (e: React.ChangeEvent<HTMLInputElement>) => { setNewNumero(e.target.value); }
-  const handleCodigoInputChange = (e: React.ChangeEvent<HTMLInputElement>) => { setNewCodigoPostal(e.target.value); }
-  const handleInfoInputChange = (e: React.ChangeEvent<HTMLInputElement>) => { setNewInformacoesAdicionais(e.target.value); }
-
-  const handleRgSubmit = async () => {
-    
-    if (newEstado == '' || newCidade == '' || newBairro == '' || newRua == '' || newNumero == '' || newCodigoPostal == '' || newInformacoesAdicionais == ''){
-      alert('Por favor, preencha todos os campos!')
-    }
-    else{
-
-    try{
-
-      let dataform = {
-        estado: newEstado,
-        cidade: newCidade,
-        bairro: newBairro,
-        rua: newRua,
-        numero: newNumero,
-        codigoPostal: newCodigoPostal,
-        informacoesAdicionais: newInformacoesAdicionais
-      }
-
-      const response = await fetch(`http://localhost:32832/cliente/atualizar`, {
-        method: 'PUT',
+  const handleDeleteRgs = async (id: number) => {
+    try {
+      const response = await fetch(`http://localhost:5000/rgs/${id}`, {
+        method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ id: object.id, nome: object.nome, sobreNome: object.nomeSobrenome, email: object.email, endereco: dataform, telefones: object.telefones }), 
       });
+
       // Check for a successful response
       if (response.ok) {
-        alert('Endereço atualizado com sucesso');
+        alert('Rg excluído com sucesso');
         onHide(); // Close the modal after a successful request
         window.location.reload();
       } else {
         const errorText = await response.text(); // Get the error message from the server
-        alert(`Erro ao atualizar o endereço: ${errorText}`);
+        alert(`Erro ao excluir o Rg: ${errorText}`);
       }
     } catch (error) {
       console.error('Erro na requisição:', error);
-      alert('Erro ao atualizar o endereço');
+      alert('Erro ao excluir o Rg');
+    }
+  }
+
+  const handleDeletePhone = async (id: number) => {
+    try {
+      const response = await fetch(`http://localhost:5000/telefones/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      // Check for a successful response
+      if (response.ok) {
+        alert('Telefone excluído com sucesso');
+        onHide(); // Close the modal after a successful request
+        window.location.reload();
+      } else {
+        const errorText = await response.text(); // Get the error message from the server
+        alert(`Erro ao excluir o telefone: ${errorText}`);
+      }
+    } catch (error) {
+      console.error('Erro na requisição:', error);
+      alert('Erro ao excluir o telefone');
+    }
+  }
+
+  const handleAddRgClick = () => setShowRgForm(true);
+
+  const handleRgInputChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setNewRg(e.target.value);
+
+  const handleRgEmissaoInputChange = (e: React.ChangeEvent<HTMLInputElement>) => setNewRgEmissao(e.target.value);
+
+  const handleRgSubmit = async () => {
+    if (newRg == '' || newRgEmissao == ''){
+      alert('Por favor, preencha todos os campos!')
+    }
+
+    else{
+    
+    try{
+      const response = await fetch(`http://localhost:5000/rgs/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ rg_valor: newRg, rg_dataEmissao: newRgEmissao, cli_cod: object.cli_cod}), 
+      });
+      // Check for a successful response
+      if (response.ok) {
+        alert('Rg cadastrado com sucesso');
+        onHide(); // Close the modal after a successful request
+        window.location.reload();
+      } else {
+        const errorText = await response.text(); // Get the error message from the server
+        alert(`Erro ao cadastrar o Rg: ${errorText}`);
+      }
+    } catch (error) {
+      console.error('Erro na requisição:', error);
+      alert('Erro ao cadastrar o Rg');
     }
 
 
-    setNewEstado("");
-    setNewCidade("");
-    setNewBairro("");
-    setNewRua("");
-    setNewNumero("");
-    setNewCodigoPostal("");
-    setNewInformacoesAdicionais("");
+    setShowRgForm(false);
+    setNewRg("");
+    setNewRgEmissao("");
   }
   };
 
@@ -152,8 +156,8 @@ const LocalDetalhesClienteForm: React.FC<Props> = ({ object, quitButtonText, onH
         <h3>Telefones do cliente:</h3>
         {object.telefones && object.telefones.length > 0 ? (
           <ul>
-            {object.telefones.map((tel: any) => (
-              <li key={tel.id}>({tel.ddd}) {tel.numero}</li>
+            {object.telefones.map((a: any) => (
+              <li key={a.tel_cod}>{a.tel_ddd} {a.tel_numero} <button onClick={() => handleDeletePhone(a.tel_cod)} style={{ backgroundColor: "rgba(0,0,0,0)", borderColor: "rgba(0,0,0,0)", }}> <FaRegTrashCan /> </button></li>
             ))}
           </ul>
         ) : (
@@ -176,8 +180,8 @@ const LocalDetalhesClienteForm: React.FC<Props> = ({ object, quitButtonText, onH
               <Form.Control
                 type="text"
                 placeholder="DDD"
-                value={newTelddd}
-                onChange={handleDddInputChange}
+                value={newDdd}
+                onChange={handlePhoneDddInputChange}
               />
             </Form.Group>
 
@@ -186,10 +190,11 @@ const LocalDetalhesClienteForm: React.FC<Props> = ({ object, quitButtonText, onH
               <Form.Control
                 type="text"
                 placeholder="Número"
-                value={newTelNumero}
+                value={newPhone}
                 onChange={handlePhoneInputChange}
               />
             </Form.Group>
+
 
             <Button
               variant="primary"
@@ -203,29 +208,19 @@ const LocalDetalhesClienteForm: React.FC<Props> = ({ object, quitButtonText, onH
       </div>
 
       <div style={{ marginBottom: "20px" }}>
-        <h3>Endereço do cliente:</h3>
-        {object.endereco ? (
-          <div>
+        <h3>Rgs do cliente:</h3>
+        {object.rgs && object.rgs.length > 0 ? (
           <ul>
-            <li>Endereço: {object.endereco.rua}, {object.endereco.numero}, {object.endereco.bairro} | {object.endereco.cidade} - {object.endereco.estado}</li>
-            <li>Código postal: {object.endereco.codigoPostal}</li>
-            <li>Informações adicionais: {object.endereco.informacoesAdicionais}</li>
+            {object.rgs.map((a: any) => (
+              <li key={a.rg_cod}>{a.rg_valor} <button onClick={() => handleDeleteRgs(a.rg_cod)} style={{ backgroundColor: "rgba(0,0,0,0)", borderColor: "rgba(0,0,0,0)", }}> <FaRegTrashCan /> </button></li>
+            ))}
           </ul>
-
-          <a href="#" onClick={(e) => { e.preventDefault(); handleAddRgClick(); }}>
-            + Editar endereço
-          </a>
-          </div>
         ) : (
-          <div>
-          <p>Este cliente não possui um endereço cadastrado.</p>
-
-          <a href="#" onClick={(e) => { e.preventDefault(); handleAddRgClick(); }}>
-          + Cadastrar um endereço
-        </a>
-        </div>
+          <p>Este cliente não possui RGs cadastrados.</p>
         )}
-
+        <a href="#" onClick={(e) => { e.preventDefault(); handleAddRgClick(); }}>
+          + Adicionar RG
+        </a>
 
         {showRgForm && (
           <Form
@@ -236,72 +231,21 @@ const LocalDetalhesClienteForm: React.FC<Props> = ({ object, quitButtonText, onH
             }}
           >
             <Form.Group controlId="rgInput">
-              <Form.Label>Estado:</Form.Label>
+              <Form.Label>Novo RG</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Estado"
-                value={newEstado}
-                onChange={handleEstadoInputChange}
+                placeholder="00.000.000-0"
+                value={newRg}
+                onChange={handleRgInputChange}
               />
             </Form.Group>
 
             <Form.Group controlId="rgInput">
-              <Form.Label>Cidade:</Form.Label>
+              <Form.Label>Data de emissão do novo RG</Form.Label>
               <Form.Control
-                type="text"
-                placeholder="Cidade"
-                value={newCidade}
-                onChange={handleCidadeInputChange}
-              />
-            </Form.Group>
-
-            <Form.Group controlId="rgInput">
-              <Form.Label>Bairro</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Bairro"
-                value={newBairro}
-                onChange={handleBairroInputChange}
-              />
-            </Form.Group>
-
-            <Form.Group controlId="rgInput">
-              <Form.Label>Rua</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Rua"
-                value={newRua}
-                onChange={handleRuaInputChange}
-              />
-            </Form.Group>
-
-            <Form.Group controlId="rgInput">
-              <Form.Label>Número</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Número"
-                value={newNumero}
-                onChange={handleNumeroInputChange}
-              />
-            </Form.Group>
-
-            <Form.Group controlId="rgInput">
-              <Form.Label>Código Postal</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="CEP"
-                value={newCodigoPostal}
-                onChange={handleCodigoInputChange}
-              />
-            </Form.Group>
-
-            <Form.Group controlId="rgInput">
-              <Form.Label>Informações adicionais</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Informações adicionais"
-                value={newInformacoesAdicionais}
-                onChange={handleInfoInputChange}
+                type="date"
+                value={newRgEmissao}
+                onChange={handleRgEmissaoInputChange}
               />
             </Form.Group>
 

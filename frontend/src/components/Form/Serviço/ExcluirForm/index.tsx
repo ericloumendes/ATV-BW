@@ -1,23 +1,18 @@
-import React from "react";
+import React, { FC } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 
 type Props = {
-  clienteId: number;
+  servicoId: number;
   quitButtonText: string;
   subimitButtonText: string;
   onHide: () => void;
 };
 
-const LocalClienteExcluirForm: React.FC<Props> = ({
-  clienteId,
-  quitButtonText,
-  subimitButtonText,
-  onHide,
-}) => {
+const LocalServicoExcluirForm: FC<Props> = ({ servicoId, quitButtonText, subimitButtonText, onHide }) => {
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault(); // Prevent default form submission behavior
+    e.preventDefault();
     try {
-      const response = await fetch(`http://localhost:5000/cliente/${clienteId}`, {
+      const response = await fetch(`http://localhost:5000/servico/${servicoId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -26,16 +21,16 @@ const LocalClienteExcluirForm: React.FC<Props> = ({
 
       // Check for a successful response
       if (response.ok) {
-        alert('Cliente excluído com sucesso');
+        alert('Serviço excluído com sucesso');
         onHide(); // Close the modal after a successful request
         window.location.reload();
       } else {
         const errorText = await response.text(); // Get the error message from the server
-        alert(`Erro ao excluir o cliente: ${errorText}`);
+        alert(`Erro ao excluir o Serviço: ${errorText}`);
       }
     } catch (error) {
       console.error('Erro na requisição:', error);
-      alert('Erro ao excluir o cliente');
+      alert('Erro ao excluir o Serviço');
     }
   };
 
@@ -55,4 +50,4 @@ const LocalClienteExcluirForm: React.FC<Props> = ({
   );
 };
 
-export default LocalClienteExcluirForm;
+export default LocalServicoExcluirForm;

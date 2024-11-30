@@ -14,26 +14,27 @@ const LocalClienteEditarForm: React.FC<Props> = ({
   subimitButtonText,
   onHide,
 }) => {
-  const [nome, setNome] = useState(Object.nome);
-  const [nomeSobrenome, setNomeSobrenome] = useState(Object.sobreNome);
-  const [email, setEmail] = useState(Object.email);
+  const [nome, setNome] = useState(Object.cli_nome);
+  const [nomeSocial, setNomeSocial] = useState(Object.cli_nomeSocial);
+  const [sexo, setSexo] = useState(Object.cli_sexo);
+  const [cpf, setCpf] = useState(Object.cli_cpf);
+  const [cpfEmissao, setCpfEmissao] = useState(Object.cli_cpfEmissao);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault(); // Prevent default form submission behavior
-    
-    if (nome == '' || nomeSobrenome == '' || email == ''){
+    if (nome == '' || nomeSocial == '' || sexo == '' || cpf == '' || cpfEmissao == ''){
       alert('Por favor, preencha todos os campos!')
     }
 
     else{
 
     try{
-      const response = await fetch(`http://localhost:32832/cliente/atualizar`, {
+      const response = await fetch(`http://localhost:5000/cliente/${Object.cli_cod}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ id: Object.id, nome: nome, sobreNome: nomeSobrenome, email: email, endereco: Object.endereco, telefones: Object.telefones }), 
+        body: JSON.stringify({ cli_nome: nome, cli_nomeSocial: nomeSocial, cli_sexo: sexo, cli_cpf: cpf, cli_cpfEmissao: cpfEmissao }), 
       });
       // Check for a successful response
       if (response.ok) {
@@ -51,9 +52,17 @@ const LocalClienteEditarForm: React.FC<Props> = ({
 
 
     setNome("");
-    setNomeSobrenome("");
-    setEmail("");
+    setNomeSocial("");
+    setSexo("Masculino")
+    setCpf("");
+    setCpfEmissao("")
   }
+  };
+
+  const handleChangeSexo = (e: React.ChangeEvent<any>) => {
+    const value = (e.target as HTMLSelectElement).value;
+    setSexo(value);
+    console.log("Selected Option:", value);
   };
   
 
@@ -71,22 +80,39 @@ const LocalClienteEditarForm: React.FC<Props> = ({
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="formNomeSocial">
-          <Form.Label>Sobrenome</Form.Label>
+          <Form.Label>Nome Social</Form.Label>
           <Form.Control
             type="text"
-            placeholder="Sobrenome do cliente: "
-            value={nomeSobrenome}
-            onChange={(e) => setNomeSobrenome(e.target.value)}
+            placeholder="Nome social do cliente"
+            value={nomeSocial}
+            onChange={(e) => setNomeSocial(e.target.value)}
+          />
+        </Form.Group>
+
+        <Form.Group className="mb-3" controlId="chooseField">
+          <Form.Label>Sexo</Form.Label>
+          <Form.Control as="select" value={sexo} onChange={handleChangeSexo}>
+            <option value="masculino">Masculino</option>
+            <option value="feminino">Feminino</option>
+          </Form.Control>
+        </Form.Group>
+
+        <Form.Group className="mb-3" controlId="formCpf">
+          <Form.Label>CPF</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="000.000.000-00"
+            value={cpf}
+            onChange={(e) => setCpf(e.target.value)}
           />
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="formCpf">
-          <Form.Label>E-mail</Form.Label>
+          <Form.Label>Data de emissão do CPF</Form.Label>
           <Form.Control
-            type="e-mail"
-            placeholder="endereço@dominio.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            type="date"
+            value={cpfEmissao}
+            onChange={(e) => setCpfEmissao(e.target.value)}
           />
         </Form.Group>
 

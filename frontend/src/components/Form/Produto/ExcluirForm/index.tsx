@@ -2,22 +2,18 @@ import React from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 
 type Props = {
-  clienteId: number;
+  produtoId: number;
   quitButtonText: string;
   subimitButtonText: string;
   onHide: () => void;
 };
 
-const LocalClienteExcluirForm: React.FC<Props> = ({
-  clienteId,
-  quitButtonText,
-  subimitButtonText,
-  onHide,
-}) => {
+const LocalProdutoExcluirForm: React.FC<Props> = ({ produtoId, quitButtonText, subimitButtonText, onHide }) => {
+  
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault(); // Prevent default form submission behavior
+    e.preventDefault();
     try {
-      const response = await fetch(`http://localhost:5000/cliente/${clienteId}`, {
+      const response = await fetch(`http://localhost:5000/produto/${produtoId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -26,16 +22,16 @@ const LocalClienteExcluirForm: React.FC<Props> = ({
 
       // Check for a successful response
       if (response.ok) {
-        alert('Cliente excluído com sucesso');
+        alert('Produto excluído com sucesso');
         onHide(); // Close the modal after a successful request
         window.location.reload();
       } else {
         const errorText = await response.text(); // Get the error message from the server
-        alert(`Erro ao excluir o cliente: ${errorText}`);
+        alert(`Erro ao excluir o Produto: ${errorText}`);
       }
     } catch (error) {
       console.error('Erro na requisição:', error);
-      alert('Erro ao excluir o cliente');
+      alert('Erro ao excluir o Produto');
     }
   };
 
@@ -55,4 +51,4 @@ const LocalClienteExcluirForm: React.FC<Props> = ({
   );
 };
 
-export default LocalClienteExcluirForm;
+export default LocalProdutoExcluirForm;
