@@ -1,0 +1,250 @@
+[
+    {
+      "nome": "John Doe",
+      "nomeSocial": "J. Doe",
+      "sexo": "m",
+      "cpf": {
+        "valor": "12345678910"
+      },
+      "rgs": [],
+      "dataCadastro": "2024-11-16T12:34:56.789Z",
+      "telefones": [],
+      "produtosConsumidos": [],
+      "servicosConsumidos": []
+    },
+    {
+      "nome": "Jane Smith",
+      "nomeSocial": "J. Smith",
+      "sexo": "f",
+      "cpf": {
+        "valor": "98765432100"
+      },
+      "rgs": [],
+      "dataCadastro": "2024-11-16T12:34:56.789Z",
+      "telefones": [],
+      "produtosConsumidos": [],
+      "servicosConsumidos": []
+    },
+    {
+      "nome": "Alice Johnson",
+      "nomeSocial": "A. Johnson",
+      "sexo": "f",
+      "cpf": {
+        "valor": "12398745632"
+      },
+      "rgs": [],
+      "dataCadastro": "2024-11-16T12:34:56.789Z",
+      "telefones": [],
+      "produtosConsumidos": [],
+      "servicosConsumidos": []
+    },
+    {
+      "nome": "Bob Williams",
+      "nomeSocial": "B. Williams",
+      "sexo": "m",
+      "cpf": {
+        "valor": "11223344556"
+      },
+      "rgs": [],
+      "dataCadastro": "2024-11-16T12:34:56.789Z",
+      "telefones": [],
+      "produtosConsumidos": [],
+      "servicosConsumidos": []
+    },
+    {
+      "nome": "Charlie Brown",
+      "nomeSocial": "C. Brown",
+      "sexo": "m",
+      "cpf": {
+        "valor": "33445566788"
+      },
+      "rgs": [],
+      "dataCadastro": "2024-11-16T12:34:56.789Z",
+      "telefones": [],
+      "produtosConsumidos": [],
+      "servicosConsumidos": []
+    },
+    {
+      "nome": "David Miller",
+      "nomeSocial": "D. Miller",
+      "sexo": "m",
+      "cpf": {
+        "valor": "55667788990"
+      },
+      "rgs": [],
+      "dataCadastro": "2024-11-16T12:34:56.789Z",
+      "telefones": [],
+      "produtosConsumidos": [],
+      "servicosConsumidos": []
+    },
+    {
+      "nome": "Eva Davis",
+      "nomeSocial": "E. Davis",
+      "sexo": "f",
+      "cpf": {
+        "valor": "66778899001"
+      },
+      "rgs": [],
+      "dataCadastro": "2024-11-16T12:34:56.789Z",
+      "telefones": [],
+      "produtosConsumidos": [],
+      "servicosConsumidos": []
+    },
+    {
+      "nome": "Franklin Taylor",
+      "nomeSocial": "F. Taylor",
+      "sexo": "m",
+      "cpf": {
+        "valor": "77889900112"
+      },
+      "rgs": [],
+      "dataCadastro": "2024-11-16T12:34:56.789Z",
+      "telefones": [],
+      "produtosConsumidos": [],
+      "servicosConsumidos": []
+    },
+    {
+      "nome": "Grace Thomas",
+      "nomeSocial": "G. Thomas",
+      "sexo": "f",
+      "cpf": {
+        "valor": "88990011223"
+      },
+      "rgs": [],
+      "dataCadastro": "2024-11-16T12:34:56.789Z",
+      "telefones": [],
+      "produtosConsumidos": [],
+      "servicosConsumidos": []
+    },
+    {
+      "nome": "Henry Lee",
+      "nomeSocial": "H. Lee",
+      "sexo": "m",
+      "cpf": {
+        "valor": "99001122334"
+      },
+      "rgs": [],
+      "dataCadastro": "2024-11-16T12:34:56.789Z",
+      "telefones": [],
+      "produtosConsumidos": [],
+      "servicosConsumidos": []
+    },
+    {
+      "nome": "Isabel Gonzalez",
+      "nomeSocial": "I. Gonzalez",
+      "sexo": "f",
+      "cpf": {
+        "valor": "10111223345"
+      },
+      "rgs": [],
+      "dataCadastro": "2024-11-16T12:34:56.789Z",
+      "telefones": [],
+      "produtosConsumidos": [],
+      "servicosConsumidos": []
+    },
+    {
+      "nome": "Jack Martinez",
+      "nomeSocial": "J. Martinez",
+      "sexo": "m",
+      "cpf": {
+        "valor": "12131444556"
+      },
+      "rgs": [],
+      "dataCadastro": "2024-11-16T12:34:56.789Z",
+      "telefones": [],
+      "produtosConsumidos": [],
+      "servicosConsumidos": []
+    },
+    {
+      "nome": "Kathy Robinson",
+      "nomeSocial": "K. Robinson",
+      "sexo": "f",
+      "cpf": {
+        "valor": "13141555667"
+      },
+      "rgs": [],
+      "dataCadastro": "2024-11-16T12:34:56.789Z",
+      "telefones": [],
+      "produtosConsumidos": [],
+      "servicosConsumidos": []
+    },
+    {
+      "nome": "Liam Scott",
+      "nomeSocial": "L. Scott",
+      "sexo": "m",
+      "cpf": {
+        "valor": "14161766778"
+      },
+      "rgs": [],
+      "dataCadastro": "2024-11-16T12:34:56.789Z",
+      "telefones": [],
+      "produtosConsumidos": [],
+      "servicosConsumidos": []
+    },
+    {
+      "nome": "Monica Wright",
+      "nomeSocial": "M. Wright",
+      "sexo": "f",
+      "cpf": {
+        "valor": "15171877889"
+      },
+      "rgs": [],
+      "dataCadastro": "2024-11-16T12:34:56.789Z",
+      "telefones": [],
+      "produtosConsumidos": [],
+      "servicosConsumidos": []
+    },
+    {
+      "nome": "Nathan Harris",
+      "nomeSocial": "N. Harris",
+      "sexo": "m",
+      "cpf": {
+        "valor": "16181988990"
+      },
+      "rgs": [],
+      "dataCadastro": "2024-11-16T12:34:56.789Z",
+      "telefones": [],
+      "produtosConsumidos": [],
+      "servicosConsumidos": []
+    },
+    {
+      "nome": "Olivia Clark",
+      "nomeSocial": "O. Clark",
+      "sexo": "f",
+      "cpf": {
+        "valor": "17192090011"
+      },
+      "rgs": [],
+      "dataCadastro": "2024-11-16T12:34:56.789Z",
+      "telefones": [],
+      "produtosConsumidos": [],
+      "servicosConsumidos": []
+    },
+    {
+      "nome": "Paul King",
+      "nomeSocial": "P. King",
+      "sexo": "m",
+      "cpf": {
+        "valor": "18202101122"
+      },
+      "rgs": [],
+      "dataCadastro": "2024-11-16T12:34:56.789Z",
+      "telefones": [],
+      "produtosConsumidos": [],
+      "servicosConsumidos": []
+    },
+    {
+      "nome": "Quinn Young",
+      "nomeSocial": "Q. Young",
+      "sexo": "f",
+      "cpf": {
+        "valor": "19212212233"
+      },
+      "rgs": [],
+      "dataCadastro": "2024-11-16T12:34:56.789Z",
+      "telefones": [],
+      "produtosConsumidos": [],
+      "servicosConsumidos": []
+    }
+  ]
+  
