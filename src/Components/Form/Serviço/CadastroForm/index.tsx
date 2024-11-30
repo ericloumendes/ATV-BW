@@ -1,79 +1,73 @@
-import { Component, ReactNode } from "react";
+import React, { useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 
-type state = {
-    nome: string,
-    valor: number,
-    genero: string,
-}
+type Props = {
+  quitButtonText: string;
+  subimitButtonText: string;
+  onHide: () => void;
+};
 
-type props = {
-    quitButtonText: string,
-    subimitButtonText: string,
-    onHide: any
-}
+const LocalServicoCadastroForm: React.FC<Props> = ({
+  quitButtonText,
+  subimitButtonText,
+  onHide,
+}) => {
+  const [nome, setNome] = useState("");
+  const [valor, setValor] = useState(0);
+  const [genero, setGenero] = useState("");
 
-export default class LocalServicoCadastroForm extends Component<props, state> {
-    constructor(props: props){
-        super(props)
-        this.state = {
-            nome: '',
-            valor: 0,
-            genero: ''
-        }
-    }
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    alert(`Nome: ${nome}, Valor: ${valor}, Gênero: ${genero}`);
+    setNome("");
+    setValor(0);
+    setGenero("");
+  };
 
+  return (
+    <>
+      <Form onSubmit={handleSubmit}>
+        <Form.Group className="mb-3" controlId="formEmail">
+          <Form.Label>Nome</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Nome do produto"
+            value={nome}
+            onChange={(e) => setNome(e.target.value)}
+          />
+        </Form.Group>
 
-    handleSubmit = (e: any) => {
-        e.preventDefault(); // Prevent default form submission behavior
-        alert(`Nome: ${this.state.nome}, Valor: ${this.state.valor}, Gênero: ${this.state.genero}`);
-        this.setState({nome: '', valor: 0, genero: ''})
-      };
+        <Form.Group className="mb-3" controlId="formPassword">
+          <Form.Label>Valor do serviço</Form.Label>
+          <Form.Control
+            type="number"
+            placeholder="R$ 00,00"
+            value={valor}
+            onChange={(e) => setValor(parseFloat(e.target.value))}
+          />
+        </Form.Group>
 
-    render(): ReactNode {
-        return (
-            <>
-            <Form onSubmit={this.handleSubmit}>
-                <Form.Group className="mb-3" controlId="formEmail">
-                <Form.Label>Nome</Form.Label>
-                <Form.Control
-                type="text"
-                placeholder="Nome do produto"
-                value={this.state.nome}
-                onChange={(e) => this.setState({nome: e.target.value})}
-            />
-            </Form.Group>
+        <Form.Group className="mb-3" controlId="formPassword">
+          <Form.Label>Gênero</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Gênero"
+            value={genero}
+            onChange={(e) => setGenero(e.target.value)}
+          />
+        </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formPassword">
-                <Form.Label>Valor do serviço</Form.Label>
-                <Form.Control
-                type="number"
-                placeholder="R$ 00,00"
-                value={this.state.valor}
-                onChange={(e) => this.setState({valor: parseFloat(e.target.value)})}
-                />
-            </Form.Group>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={onHide}>
+            {quitButtonText}
+          </Button>
+          <Button variant="primary" type="submit">
+            {subimitButtonText}
+          </Button>
+        </Modal.Footer>
+      </Form>
+    </>
+  );
+};
 
-            <Form.Group className="mb-3" controlId="formPassword">
-                <Form.Label>Gênero</Form.Label>
-                <Form.Control
-                type="text"
-                placeholder="Gênero"
-                value={this.state.genero}
-                onChange={(e) => this.setState({genero: e.target.value})}
-                />
-            </Form.Group>
-
-            <Modal.Footer>
-              <Button variant="secondary" onClick={this.props.onHide}>
-                {this.props.quitButtonText}
-              </Button>
-              <Button variant="primary" type="submit">
-                {this.props.subimitButtonText}
-              </Button>
-            </Modal.Footer>
-            </Form>
-            </>
-        )
-    }
-}
+export default LocalServicoCadastroForm;

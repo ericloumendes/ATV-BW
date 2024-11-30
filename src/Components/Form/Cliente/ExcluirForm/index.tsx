@@ -1,36 +1,36 @@
-import { Component, ReactNode } from "react";
+import React from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 
-type props = {
-    quitButtonText: string,
-    subimitButtonText: string,
-    onHide: any
-}
+type Props = {
+  quitButtonText: string;
+  subimitButtonText: string;
+  onHide: () => void;
+};
 
-export default class LocalClienteExcluirForm extends Component<props> {
-    constructor(props: props){
-        super(props);
-    }
+const LocalClienteExcluirForm: React.FC<Props> = ({
+  quitButtonText,
+  subimitButtonText,
+  onHide,
+}) => {
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault(); // Prevent default form submission behavior
+    alert("Cliente excluído com sucesso!");
+  };
 
-    handleSubmit = (e: any) => {
-        e.preventDefault(); // Prevent default form submission behavior
-        alert(`Cliente excluído com sucesso!`);
-      };
+  return (
+    <>
+      <Form onSubmit={handleSubmit}>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={onHide}>
+            {quitButtonText}
+          </Button>
+          <Button variant="primary" type="submit" onClick={onHide}>
+            {subimitButtonText}
+          </Button>
+        </Modal.Footer>
+      </Form>
+    </>
+  );
+};
 
-    render(): ReactNode {
-        return (
-            <>
-            <Form onSubmit={this.handleSubmit}>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={this.props.onHide}>
-                {this.props.quitButtonText}
-              </Button>
-              <Button variant="primary" type="submit" onClick={this.props.onHide}>
-                {this.props.subimitButtonText}
-              </Button>
-            </Modal.Footer>
-            </Form>
-            </>
-        )
-    }
-}
+export default LocalClienteExcluirForm;

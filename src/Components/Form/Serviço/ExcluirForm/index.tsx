@@ -1,36 +1,32 @@
-import { Component, ReactNode } from "react";
+import React, { FC } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 
-type props = {
-    quitButtonText: string,
-    subimitButtonText: string,
-    onHide: any
-}
+type Props = {
+  quitButtonText: string;
+  subimitButtonText: string;
+  onHide: () => void;
+};
 
-export default class LocalServicoExcluirForm extends Component<props> {
-    constructor(props: props){
-        super(props);
-    }
+const LocalServicoExcluirForm: FC<Props> = ({ quitButtonText, subimitButtonText, onHide }) => {
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    alert("Serviço excluído com sucesso!");
+  };
 
-    handleSubmit = (e: any) => {
-        e.preventDefault(); // Prevent default form submission behavior
-        alert(`Serviço excluído com sucesso!`);
-      };
+  return (
+    <>
+      <Form onSubmit={handleSubmit}>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={onHide}>
+            {quitButtonText}
+          </Button>
+          <Button variant="primary" type="submit" onClick={onHide}>
+            {subimitButtonText}
+          </Button>
+        </Modal.Footer>
+      </Form>
+    </>
+  );
+};
 
-    render(): ReactNode {
-        return (
-            <>
-            <Form onSubmit={this.handleSubmit}>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={this.props.onHide}>
-                {this.props.quitButtonText}
-              </Button>
-              <Button variant="primary" type="submit" onClick={this.props.onHide}>
-                {this.props.subimitButtonText}
-              </Button>
-            </Modal.Footer>
-            </Form>
-            </>
-        )
-    }
-}
+export default LocalServicoExcluirForm;

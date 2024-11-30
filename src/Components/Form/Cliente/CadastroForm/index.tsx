@@ -1,94 +1,90 @@
-import { Component, ReactNode } from "react";
+import React, { useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 
-type state = {
-    nome: string,
-    nomeSocial: string,
-    sexo: string,
-    cpf: string
-}
+type Props = {
+  quitButtonText: string;
+  subimitButtonText: string;
+  onHide: () => void;
+};
 
-type props = {
-    quitButtonText: string,
-    subimitButtonText: string,
-    onHide: any
-}
+const LocalClienteCadastroForm: React.FC<Props> = ({
+  quitButtonText,
+  subimitButtonText,
+  onHide,
+}) => {
+  const [nome, setNome] = useState("");
+  const [nomeSocial, setNomeSocial] = useState("");
+  const [sexo, setSexo] = useState("masculino");
+  const [cpf, setCpf] = useState("");
 
-export default class LocalClienteCadastroForm extends Component<props, state> {
-    constructor(props: props){
-        super(props)
-        this.state = {
-            nome: '',
-            nomeSocial: '',
-            sexo: 'masculino',
-            cpf: ''
-        }
-    }
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault(); // Prevent default form submission behavior
+    alert(`Nome: ${nome}, Nome Social: ${nomeSocial}, Sexo: ${sexo}, CPF: ${cpf}`);
+    setNome("");
+    setNomeSocial("");
+    setSexo("masculino");
+    setCpf("");
+  };
 
+  const handleChangeSexo = (e: React.ChangeEvent<any>) => {
+    const value = (e.target as HTMLSelectElement).value;
+    setSexo(value);
+    console.log("Selected Option:", value);
+  };
+  
 
-    handleSubmit = (e: any) => {
-        e.preventDefault(); // Prevent default form submission behavior
-        alert(`Nome: ${this.state.nome}, Nome Social: ${this.state.nomeSocial}, Sexo: ${this.state.sexo}, CPF: ${this.state.cpf}`);
-        this.setState({nome: '', nomeSocial: '', sexo: 'masculino', cpf: ''})
-      };
+  return (
+    <>
+      <Form onSubmit={handleSubmit}>
+        <Form.Group className="mb-3" controlId="formNome">
+          <Form.Label>Nome</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Nome do cliente"
+            value={nome}
+            onChange={(e) => setNome(e.target.value)}
+          />
+        </Form.Group>
 
-    handleChangeSexo = (e: React.ChangeEvent<any>) => {
-        this.setState({sexo: e.target.value});
-        console.log('Selected Option:', e.target.value);
-      };
+        <Form.Group className="mb-3" controlId="formNomeSocial">
+          <Form.Label>Nome Social</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Nome social do cliente"
+            value={nomeSocial}
+            onChange={(e) => setNomeSocial(e.target.value)}
+          />
+        </Form.Group>
 
-    render(): ReactNode {
-        return (
-            <>
-            <Form onSubmit={this.handleSubmit}>
-                <Form.Group className="mb-3" controlId="formEmail">
-                <Form.Label>Nome</Form.Label>
-                <Form.Control
-                type="text"
-                placeholder="Nome do cliente"
-                value={this.state.nome}
-                onChange={(e) => this.setState({nome: e.target.value})}
-            />
-            </Form.Group>
+        <Form.Group className="mb-3" controlId="chooseField">
+          <Form.Label>Sexo</Form.Label>
+          <Form.Control as="select" value={sexo} onChange={handleChangeSexo}>
+            <option value="masculino">Masculino</option>
+            <option value="feminino">Feminino</option>
+          </Form.Control>
+        </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formPassword">
-                <Form.Label>Nome Social</Form.Label>
-                <Form.Control
-                type="text"
-                placeholder="Nome social do cliente"
-                value={this.state.nomeSocial}
-                onChange={(e) => this.setState({nomeSocial: e.target.value})}
-                />
-            </Form.Group>
+        <Form.Group className="mb-3" controlId="formCpf">
+          <Form.Label>CPF</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="000.000.000-00"
+            value={cpf}
+            onChange={(e) => setCpf(e.target.value)}
+          />
+        </Form.Group>
 
-            <Form.Group className="mb-3" controlId="chooseField">
-                <Form.Label>Sexo</Form.Label>
-                <Form.Control as="select" value={this.state.sexo} onChange={this.handleChangeSexo}>
-                <option value="masculino">Masculino</option>
-                <option value="feminino">Feminino</option>
-                </Form.Control>
-            </Form.Group>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={onHide}>
+            {quitButtonText}
+          </Button>
+          <Button variant="primary" type="submit">
+            {subimitButtonText}
+          </Button>
+        </Modal.Footer>
+      </Form>
+    </>
+  );
+};
 
-            <Form.Group className="mb-3" controlId="formPassword">
-                <Form.Label>CPF</Form.Label>
-                <Form.Control
-                type="text"
-                placeholder="000.000.000-00"
-                value={this.state.cpf}
-                onChange={(e) => this.setState({cpf: e.target.value})}
-                />
-            </Form.Group>
-
-            <Modal.Footer>
-              <Button variant="secondary" onClick={this.props.onHide}>
-                {this.props.quitButtonText}
-              </Button>
-              <Button variant="primary" type="submit">
-                {this.props.subimitButtonText}
-              </Button>
-            </Modal.Footer>
-            </Form>
-            </>
-        )
-    }
-}
+export default LocalClienteCadastroForm;
